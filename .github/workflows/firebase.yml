@@ -30,9 +30,22 @@ jobs:
           name: dist
           path: dist
 
+  test:
+    name: Test
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      with:
+        node-version: [16.x, 18.x]
+        cache: 'npm'
+      - run: npm install
+      - run: npm test
+
   deploy:
     name: Deploy
-    needs: build
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -41,7 +54,7 @@ jobs:
         with:
           name: dist
           path: dist
-      - name: Depoy to Firebase
+      - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
           args: deploy --only hosting
