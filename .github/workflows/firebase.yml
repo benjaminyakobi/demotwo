@@ -20,15 +20,14 @@ jobs:
   build-project:
     name: Build project
     runs-on: ubuntu-latest
-    container: node:14 | node:15
     strategy:
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [14.x, 16.x, 18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
-      - name: Checkout code
+      - name: Checkout code from GitHub
         uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
@@ -46,15 +45,14 @@ jobs:
     name: Test project
     needs: build-project
     runs-on: ubuntu-latest
-    container: node:14 | node:15
     strategy:
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [14.x, 16.x, 18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
@@ -68,7 +66,7 @@ jobs:
     needs: test-project
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout code from GitHub
         uses: actions/checkout@v3
       - name: Download artifact
         uses: actions/download-artifact@v3
