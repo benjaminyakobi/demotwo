@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x, 18.x]
-        ubuntu-version: "ubuntu-latest"
+        ubuntu-version: ubuntu-22.04
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -34,7 +34,7 @@ jobs:
   test:
     name: Test
     needs: build
-    runs-on: ${{ matrix.ubuntu-version }}
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
@@ -47,7 +47,7 @@ jobs:
   deploy:
     name: Deploy
     needs: test
-    runs-on: ${{ matrix.ubuntu-version }}
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - name: Download Build
