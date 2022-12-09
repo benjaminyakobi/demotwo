@@ -1,7 +1,7 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Node.js CI
+name: Node.js CI (Build-Test-Deploy)
 
 # when the following workflow runs, it will be paused with the status pending if any job or workflow that uses the production concurrency group is in progress. It will also cancel any job or workflow that uses the production concurrency group and has the status pending. This means that there will be a maximum of one running and one pending job or workflow in that uses the production concurrency group.
 
@@ -18,8 +18,9 @@ on:
 
 jobs:
   build-project:
-    name: Build
+    name: Build project
     runs-on: ubuntu-latest
+    container: node:14 | node:15
     strategy:
       matrix:
         node-version: [16.x, 18.x]
@@ -35,16 +36,17 @@ jobs:
         run: npm ci
       - name: Build project assets
         run: npm run build
-      - name: Archive Build assets
+      - name: Archive project assets
         uses: actions/upload-artifact@v3
         with:
           name: dist
           path: dist
 
-  test:
-    name: Test
+  test-project:
+    name: Test project
     needs: build-project
     runs-on: ubuntu-latest
+    container: node:14 | node:15
     strategy:
       matrix:
         node-version: [16.x, 18.x]
@@ -61,18 +63,20 @@ jobs:
       - name: Run tests
         run: npm test
 
-  deploy:
-    name: Deploy
-    needs: test
+  deploy-project:
+    name: Deploy project
+    needs: test-project
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Download Build assets
+      - name: Download artifact
         uses: actions/download-artifact@v3
         with:
           name: dist
           path: dist
+      - name: Test artifact download
+        run: ls -R
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
