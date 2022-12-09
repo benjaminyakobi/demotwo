@@ -6,10 +6,9 @@ name: Node.js CI
 # when the following workflow runs, it will be paused with the status pending if any job or workflow that uses the production concurrency group is in progress. It will also cancel any job or workflow that uses the production concurrency group and has the status pending. This means that there will be a maximum of one running and one pending job or workflow in that uses the production concurrency group.
 
 #cancel-in-progress to cancel any currently running job or workflow in the same concurrency group. This means that there will be a maximum of one running and zero pending job or workflow in that uses the production concurrency group.
-concurrency: 
+concurrency:
   group: production
   cancel-in-progress: true
-
 
 on:
   push:
