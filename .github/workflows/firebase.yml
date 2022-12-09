@@ -66,8 +66,8 @@ jobs:
     needs: test-project
     runs-on: ubuntu-latest
     steps:
-      # - name: Checkout code from GitHub
-      #   uses: actions/checkout@v3
+      - name: Checkout code from GitHub
+        uses: actions/checkout@v3
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
