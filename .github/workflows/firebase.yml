@@ -31,10 +31,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install NPM dependencies
-        run: npm ci
+      - name: Install yarn package manager
+        run: npm i yarn
+      - name: Install NPM dependencies with yarn
+        run: yarn install
       - name: Build project assets
-        run: npm run build
+        run: yarn build
       - name: Archive project assets
         uses: actions/upload-artifact@v3
         with:
@@ -56,10 +58,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Install yarn package manager
+        run: npm i yarn
       - name: Install NPM dependencies
-        run: npm ci
+        run: yarn install
       - name: Run tests
-        run: npm test
+        run: yarn test
 
   deploy-project:
     name: Deploy project
