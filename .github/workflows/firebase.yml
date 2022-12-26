@@ -33,7 +33,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install yarn package manager
         run: npm i yarn
-      - name: Install NPM dependencies with yarn
+      - name: Install dependencies with yarn
         run: yarn install
       - name: Build project assets
         run: yarn build
@@ -60,7 +60,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install yarn package manager
         run: npm i yarn
-      - name: Install NPM dependencies
+      - name: Install dependencies with yarn
         run: yarn install
       - name: Run tests
         run: yarn test
