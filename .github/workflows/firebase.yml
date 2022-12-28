@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [14.x, 16.x, 18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
       - name: Checkout code
@@ -31,12 +31,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install yarn package manager
-        run: npm i yarn
-      - name: Install dependencies with yarn
-        run: yarn install
+      - name: Install NPM dependencies
+        run: npm ci
       - name: Build project assets
-        run: yarn build
+        run: npm run build
       - name: Archive project assets
         uses: actions/upload-artifact@v3
         with:
@@ -58,12 +56,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install yarn package manager
-        run: npm i yarn
-      - name: Install dependencies with yarn
-        run: yarn install
+      - name: Install NPM dependencies
+        run: npm ci
       - name: Run tests
-        run: yarn test
+        run: npm test
 
   deploy-project:
     name: Deploy project
