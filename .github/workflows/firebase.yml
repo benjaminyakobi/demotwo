@@ -125,8 +125,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.semver.outputs.patch }}
-          release_name: Release ${{ steps.semver.outputs.patch }}
+          tag_name: ${{ steps.semver.outputs.minor }}
+          release_name: Release ${{ steps.semver.outputs.minor }}
 
       - name: Upload release asset
         id: upload-release-asset
