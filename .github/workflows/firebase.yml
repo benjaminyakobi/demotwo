@@ -95,8 +95,19 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0 # required for github-action-get-previous-tag
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: dist
+      - name: Test artifact download
+        run: ls -R
+      - name: Archive project assets
+        uses: thedoctor0/zip-release@main
+        with:
+          filename: "project.zip"
 
-      - name: Get Previous tag
+      - name: Get previous tag
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
         env:
