@@ -112,7 +112,7 @@ jobs:
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+        # Docs: https://github.com/marketplace/actions/next-semvers
       - name: Get next minor version
         id: semver
         uses: "WyriHaximus/github-action-next-semvers@v1"
@@ -125,8 +125,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.semver.outputs.minor }}
-          release_name: Release ${{ steps.semver.outputs.minor }}
+          #  major: x.0.0, minor: 0.x.0, patch: 0.0.x
+          tag_name: ${{ steps.semver.outputs.major }}
+          release_name: Release ${{ steps.semver.outputs.major }}
 
       - name: Upload release asset
         id: upload-release-asset
