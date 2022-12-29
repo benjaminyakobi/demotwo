@@ -91,27 +91,31 @@ jobs:
     needs: deploy-project
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Download artifact
-        uses: actions/download-artifact@v3
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
-          name: dist
-          path: dist
-      - name: Test artifact download
-        run: ls -R
-      - name: Archive project assets
-        uses: thedoctor0/zip-release@main
+          fetch-depth: 0 # required for github-action-get-previous-tag
+
+      - name: Get Previous tag
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get next version
+        id: next
+        uses: "WyriHaximus/github-action-next-release-version@1.0.0"
         with:
-          filename: "project.zip"
+          version: ${{ steps.previoustag.outputs.tag }}
+
       - name: Create release
         id: create_release_id
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # provided by Actions
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.run_number }}
-          release_name: Release ${{ github.run_number }}
+          tag_name: ${{ steps.next.outputs.version }}
+          release_name: Release ${{ steps.next.outputs.version }}
       - name: Upload release asset
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
