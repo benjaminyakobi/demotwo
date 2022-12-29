@@ -113,9 +113,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get next version
-        id: next
-        uses: "WyriHaximus/github-action-next-release-version@1.0.0"
+      - name: Get next minor version
+        id: semver
+        uses: "WyriHaximus/github-action-next-semvers@v1"
         with:
           version: ${{ steps.previoustag.outputs.tag }}
 
@@ -125,8 +125,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.next.outputs.version }}
-          release_name: Release ${{ steps.next.outputs.version }}
+          tag_name: ${{ steps.semver.outputs.patch }}
+          release_name: Release ${{ steps.semver.outputs.patch }}
+
       - name: Upload release asset
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
